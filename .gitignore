@@ -37,8 +37,9 @@ out/
 .vscode/
 
 ### secret info ###
-application.yml
-application.properties
+.properties
+.yml
+.yaml
 .env
 *.key
 *.pem
