@@ -1,27 +1,12 @@
 spring:
   application:
-    name: woosso_user
-  datasource:
-    url: jdbc:mysql://localhost:3306/woosso
-    username: admin
-    password: P@ssw0rd
+    name: user
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://localhost:9000
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    show-sql: true
-
-logging:
-  level:
-    root: info
-    org.springframework.security.web: debug
-    com.shpark.woosso: debug
-
-server:
-  port: 8081
-  servlet:
-    context-path: /api
-
+  cloud:
+    config:
+      username: admin
+      password: P@ssw0rd
