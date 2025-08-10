@@ -38,9 +38,9 @@ public class UserController {
         return List.of(Map.of("RESULT", "SUCCESS"));
     }
 
-/*    @PostMapping(value = "/login")
-    public List<Map<?, ?>> woossoLogin(@RequestBody Map<String, String> map) {
+    @PostMapping(value = "/admin")
+    public List<Map<?, ?>> admin() {
 
         return List.of(Map.of("RESULT", "SUCCESS"));
-    }*/
+    }
 }

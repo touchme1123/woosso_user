@@ -1,5 +1,7 @@
 package com.shpark.woosso.api.user.config;
 
+import com.shpark.woosso.api.user.jwt.JWTFilter;
+import com.shpark.woosso.api.user.jwt.JWTUtil;
 import com.shpark.woosso.api.user.jwt.LoginFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CustomSecurityConfig implements WebMvcConfigurer {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final JWTUtil jwtUtill;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -56,12 +60,16 @@ public class CustomSecurityConfig implements WebMvcConfigurer {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/user/login").permitAll()
-                        //.requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/join").permitAll()
+                        .requestMatchers("/user/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtill), LoginFilter.class);
+
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtill), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .sessionManagement((session) -> session
